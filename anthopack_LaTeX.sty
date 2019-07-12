@@ -1,0 +1,208 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{anthopack_LaTeX}[2019/07/12]
+
+% Required packages for all commands
+\RequirePackage{amsmath, amssymb, amsthm} % Mathematical facilities
+\RequirePackage{mathtools} % Mathematical tools to use with amsmath
+\RequirePackage{xparse} % New commands with optional arguments
+\RequirePackage{dsfont} % Indicator function
+
+% Commonly used packages
+%\RequirePackage[french]{babel} % Multilingual support (e.g. French)
+%\RequirePackage[utf8]{inputenc} % Accented characters
+%\RequirePackage[T1]{fontenc} % Font encoding
+\RequirePackage{lmodern} % High quality fonts
+%\RequirePackage{color} % Control colors
+%\RequirePackage{tikz} % PostScript graphicswith tikz syntax
+%\RequirePackage{multirow} % Tabular cells spanning multiple rows
+%\RequirePackage[final]{pdfpages} % Include external multi-page PDF documents
+%\RequirePackage{graphicx} % Support for graphics
+%\RequirePackage{parskip} % Indentation
+%\RequirePackage{setspace} % Spaces between lines
+%\RequirePackage{verbatim} % Reimplementation of verbatim environment
+%\RequirePackage{listings} % Typeset source code (e.g. R, Matlab, C++, etc.)
+%\RequirePackage[margin=1.25in]{geometry} % Documents dimensions (such as margins)
+%\RequirePackage{booktabs} % Enhanced tables in LaTeX
+%\RequirePackage{caption, subcaption} % Customize captions of figures (resp. sub-figures)
+%\RequirePackage{xfrac} % Inline fractions
+
+% Packages for references and bibliography
+%\RequirePackage{natbib}
+%\immediate\write18{bibtex \jobname}
+
+% Add accented characters if French
+\@ifpackagewith{babel}{french}{
+	\RequirePackage[utf8]{inputenc}
+	\RequirePackage[T1]{fontenc}
+}{}
+
+
+
+%%%%%-- Theorem / Definition / Remark styles --%%%%%
+
+% How to create a new theorem style
+\newtheoremstyle{newstyle}% name of the style to be used
+  {\topsep}% measure of space to leave above the theorem. E.g.: 3pt
+  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
+  {\itshape}% name of font to use in the body of the theorem
+  {0pt}% measure of space to indent
+  {\bfseries}% name of head font
+  { ---}% punctuation between head and body
+  { }% space after theorem head; " " = normal interword space
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+
+% To create an environment
+% \begin{envname}[Name of the theorem]
+% ...
+% \end{envname}
+
+\@ifpackagewith{babel}{french}{
+	% French environments
+	\theoremstyle{plain}
+	\newtheorem{thm}{Théorème}[section]
+	\newtheorem{lem}[thm]{Lemme}
+	\newtheorem{prop}[thm]{Proposition}
+	\newtheorem*{cor}{Corollaire}
+	
+	\theoremstyle{definition}
+	\newtheorem{defn}[thm]{Définition}
+	\newtheorem{exmp}[thm]{Exemple}
+	
+	\theoremstyle{remark}
+	\newtheorem*{rem}{Remarque}
+	\newtheorem*{note}{Note}
+}{
+	% English environments
+	\theoremstyle{plain}
+	\newtheorem{thm}{Theorem}[section]
+	\newtheorem{lem}[thm]{Lemma}
+	\newtheorem{prop}[thm]{Proposition}
+	\newtheorem*{cor}{Corollary}
+	
+	\theoremstyle{definition}
+	\newtheorem{defn}[thm]{Definition}
+	\newtheorem{exmp}[thm]{Example}
+	
+	\theoremstyle{remark}
+	\newtheorem*{rem}{Remark}
+	\newtheorem*{note}{Note}
+	
+}
+
+
+
+%%%%%-- Probability operators --%%%%%
+
+\DeclareMathOperator{\E}{E} % Expectation
+\DeclareMathOperator{\Var}{Var} % Variance
+\DeclareMathOperator{\Prob}{P} % Probability
+\DeclareMathOperator{\Cov}{Cov} % Covariance
+\DeclareMathOperator{\Cor}{Cor} % Correlation
+\DeclareMathOperator{\Bias}{Bias} % Bias
+\DeclareMathOperator{\Mse}{MSE} % Mean square error
+\DeclareMathOperator{\R}{R} % R squared
+\DeclareMathOperator{\Med}{Med} % Median
+\newcommand{\suchthat}{\;\ifnum\currentgrouptype=16 \middle\fi|\;} % Vertical bar
+\DeclareMathOperator{\eqd}{\overset{d}{=}} % Equality in distribution.
+\DeclareMathOperator{\indep}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}} % Independance.
+\DeclareMathOperator{\Ind}{\mathds 1} % Indicator function
+\renewcommand{\i}{{i\mkern1mu}} % Imaginary number
+
+
+
+%%%%%-- Financial risk measures --%%%%%
+
+\NewDocumentCommand{\quant}{o}{ % Quantile \quant[optional]
+	\IfNoValueTF{#1}
+	{q_{\alpha}}
+	{q_{#1}}
+}
+\DeclareMathOperator{\VaROp}{VaR} % Value-at-risk \VaR[optional]
+\NewDocumentCommand{\VaR}{o}{
+	\IfNoValueTF{#1}
+	{\VaROp_{\alpha}}
+	{\VaROp_{#1}}
+}
+\DeclareMathOperator{\ESOp}{ES} % Expected-shortfall \ES[optional]
+\NewDocumentCommand{\ES}{o}{
+  \IfNoValueTF{#1}
+    {\ESOp_{\alpha}}
+    {\ESOp_{#1}}
+}
+
+
+
+%%%%%-- Probability distributions --%%%%%
+
+\NewDocumentCommand \virtualDist {m o}{
+	\mathcal{#1}
+	\IfNoValueF{#2}{
+		\left( #2 \right)
+	}
+}
+\NewDocumentCommand{\Norm}{o}{\virtualDist{N}[#1]} % \Norm[optional]
+\DeclareDocumentCommand{\Logn}{o}{\text{Log-}\virtualDist{N}[#1]} % \Logn[optional]
+\DeclareDocumentCommand{\Beta}{o}{\text{Beta}\virtualDist{}[#1]} % \Logn[optional]
+\DeclareDocumentCommand{\Wishart}{o}{\virtualDist{W}[#1]} % \Wishart[optional]
+\DeclareDocumentCommand{\Unif}{m m}{\mathcal U \left( #1, #2 \right)} % \Unif{...}{...}
+\DeclareDocumentCommand{\UnifBraces}{m}{\mathcal U \left\{ #1 \right\}} % UnifBraces{...}
+\DeclareDocumentCommand{\Chisq}{m}{\chi_{#1}^2} % \Chisq{...}
+\DeclareDocumentCommand{\Bin}{m m}{\mathcal B \left( #1, #2 \right)} % \Bin{...}{...}
+\DeclareDocumentCommand{\Pois}{m}{\mathcal P \left( #1 \right)} % \Pois{...}
+\DeclareDocumentCommand{\Exp}{o}{\virtualDist{E}[#1]} % \Exp[optional]
+
+
+
+%%%%%-- Derivatives --%%%%%
+
+\newcommand\df[1]{\ensuremath{\;\mathrm{d}#1\@ifnextchar\d{\!}{}}} % \df{...}
+\DeclareDocumentCommand{\virtualDiff}{m m G{} G{}}{\frac{#1^{#4} \kern 1pt #3}{#1 \kern 1pt #2^{#4}}}
+\DeclareDocumentCommand{\pdiff}{m G{} G{}}{\virtualDiff{\partial}{#1}{#2}{#3}} % Partial derivative \pdiff{denominator}{optional numerator}{optional exponant}
+\DeclareDocumentCommand{\diff}{m G{} G{}}{\virtualDiff{\text d}{#1}{#2}{#3}} % Derivative \diff{denominator}{optional numerator}{optional exponant}
+
+
+
+%%%%%-- Special sets --%%%%%
+
+\newcommand{\Real}{\mathbb R} % Real numbers
+\newcommand{\Cplx}{\mathbb C} % Complex numbers
+\newcommand{\Nat}{\mathbb N} % Natural numbers
+\newcommand{\NatPos}{\Nat_{> 0}} % Positive natural numbers
+
+
+
+%%%%%-- Algebra --%%%%%
+
+\newcommand{\mat}[1]{\boldsymbol{#1}} % Matrix
+\renewcommand{\vec}[1]{\mat{#1}} % Vector
+\newcommand{\tr}[1]{{#1}^\intercal} % Transpose
+\DeclareMathOperator{\trace}{tr} % Trace of a matrix
+\DeclareMathOperator{\rk}{rk} % Rank of a matrix
+\newcommand{\Proj}[1]{\mat P_{#1}} % Projection matrix
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % Norm
+% Inline matrix (enclosed with resp. nothing, parentheses, brackets or vertical lines)
+% \begin{envname} ... \end{envname}
+\newenvironment{imatrix}{\begin{smallmatrix}}{\end{smallmatrix}}
+\newenvironment{ipmatrix}{\left(\begin{smallmatrix}}{\end{smallmatrix}\right)} 
+\newenvironment{ibmatrix}{\left[\begin{smallmatrix}}{\end{smallmatrix}\right]}
+\newenvironment{ivmatrix}{\left|\begin{smallmatrix}}{\end{smallmatrix}\right|}
+
+
+
+%%%%%-- Optimization --%%%%%
+
+\DeclareMathOperator*{\argmin}{arg\,min} % Argmin
+\DeclareMathOperator*{\argmax}{arg\,max} % Argmax
+\@ifpackagewith{babel}{french}{
+	\DeclareMathOperator{\SubjTo}{sous}
+}{
+	\DeclareMathOperator{\SubjTo}{subj. to}
+}
+
+
+%%%%%-- Others functions --%%%%%
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil} % \ceil*{...}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor} % \floor*{...}
+\DeclareMathOperator{\sgn}{sgn} % Sign function
+

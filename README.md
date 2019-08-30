@@ -31,7 +31,7 @@ Uncommented `\RequirePackage` commands are required to support all commands in t
 ## French and English keywords
 
 
-If you are create a TeX file with the command
+If you create a TeX file with the command
 
 ```tex
 \usepackage[french]{babel}

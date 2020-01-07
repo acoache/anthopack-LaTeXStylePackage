@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{anthopack_LaTeX}[2019/07/12]
+\ProvidesPackage{anthopack_LaTeX}[2020/01/07]
 
 % Required packages for all commands
 \RequirePackage{amsmath, amssymb, amsthm} % Mathematical facilities
@@ -28,9 +28,10 @@
 
 % Packages for references and bibliography
 %\RequirePackage{natbib}
+% Add it in your .tex document
 %\immediate\write18{bibtex \jobname}
 
-% Add accented characters if French
+% Add accented characters if writing in French
 \@ifpackagewith{babel}{french}{
 	\RequirePackage[utf8]{inputenc}
 	\RequirePackage[T1]{fontenc}
@@ -41,15 +42,15 @@
 %%%%%-- Theorem / Definition / Remark styles --%%%%%
 
 % How to create a new theorem style
-\newtheoremstyle{newstyle}% name of the style to be used
-  {\topsep}% measure of space to leave above the theorem. E.g.: 3pt
-  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
-  {\itshape}% name of font to use in the body of the theorem
-  {0pt}% measure of space to indent
-  {\bfseries}% name of head font
-  { ---}% punctuation between head and body
-  { }% space after theorem head; " " = normal interword space
-  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+\newtheoremstyle{newstyle} % name of the style to be used
+{\topsep} % measure of space to leave above the theorem. E.g.: 3pt
+{\topsep} % measure of space to leave below the theorem. E.g.: 3pt
+{\itshape} % name of font to use in the body of the theorem
+{0pt} % measure of space to indent
+{\bfseries} % name of head font
+{ ---} % punctuation between head and body
+{ } % space after theorem head; " " = normal interword space
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
 
 % To create an environment
 % \begin{envname}[Name of the theorem]
@@ -93,6 +94,7 @@
 
 %%%%%-- Probability operators --%%%%%
 
+% All mathematical operators are used as is, e.g. A \eqd B
 \DeclareMathOperator{\E}{E} % Expectation
 \DeclareMathOperator{\Var}{Var} % Variance
 \DeclareMathOperator{\Prob}{P} % Probability
@@ -128,9 +130,9 @@
 }
 \DeclareMathOperator{\ESOp}{ES} % Expected-shortfall \ES[optional]
 \NewDocumentCommand{\ES}{o}{
-  \IfNoValueTF{#1}
-    {\ESOp_{\alpha}}
-    {\ESOp_{#1}}
+	\IfNoValueTF{#1}
+	{\ESOp_{\alpha}}
+	{\ESOp_{#1}}
 }
 
 
@@ -167,7 +169,9 @@
 
 %%%%%-- Special sets --%%%%%
 
+% Used as is, e.g. A \in \Real
 \newcommand{\Real}{\mathbb R} % Real numbers
+\newcommand{\Rtnl}{\mathbb Q} % Rational numbers
 \newcommand{\Cplx}{\mathbb C} % Complex numbers
 \newcommand{\Nat}{\mathbb N} % Natural numbers
 \newcommand{\NatPos}{\Nat_{> 0}} % Positive natural numbers
@@ -176,13 +180,13 @@
 
 %%%%%-- Algebra --%%%%%
 
-\newcommand{\mat}[1]{\boldsymbol{#1}} % Matrix
-\renewcommand{\vec}[1]{\mat{#1}} % Vector
-\newcommand{\tr}[1]{{#1}^\intercal} % Transpose
+\newcommand{\mat}[1]{\boldsymbol{#1}} % Matrix \mat{...}
+\renewcommand{\vec}[1]{\mat{#1}} % Vector \vec{...}
+\newcommand{\tr}[1]{{#1}^\intercal} % Transpose \tr{...}
 \DeclareMathOperator{\trace}{tr} % Trace of a matrix
 \DeclareMathOperator{\rk}{rk} % Rank of a matrix
-\newcommand{\Proj}[1]{\mat P_{#1}} % Projection matrix
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % Norm
+\newcommand{\Proj}[1]{\mat P_{#1}} % Projection matrix \Proj{...}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % Norm \norm{...}
 % Inline matrix (enclosed with resp. nothing, parentheses, brackets or vertical lines)
 % \begin{envname} ... \end{envname}
 \newenvironment{imatrix}{\begin{smallmatrix}}{\end{smallmatrix}}
@@ -208,4 +212,3 @@
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil} % \ceil*{...}
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor} % \floor*{...}
 \DeclareMathOperator{\sgn}{sgn} % Sign function
-

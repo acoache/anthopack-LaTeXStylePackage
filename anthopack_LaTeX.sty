@@ -1,6 +1,16 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{anthopack_LaTeX}[2020/01/07]
+\ProvidesPackage{anthopack_LaTeX}[2021/04/16]
+%==============================================================================
+% Custom LaTeX style package posted at
+% https://github.com/acoache/anthopack-LaTeXStylePackage
+% 
+% Created by Anthony Coache (anthony.coache@gmail.com) in July 2019
+% Modified by Anthony Coache (anthony.coache@gmail.com) in April 2021
+% =============================================================================
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                         Packages section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Required packages for all commands
 \RequirePackage{amsmath, amssymb, amsthm} % Mathematical facilities
 \RequirePackage{mathtools} % Mathematical tools to use with amsmath
@@ -31,16 +41,9 @@
 % Add it in your .tex document
 %\immediate\write18{bibtex \jobname}
 
-% Add accented characters if writing in French
-\@ifpackagewith{babel}{french}{
-	\RequirePackage[utf8]{inputenc}
-	\RequirePackage[T1]{fontenc}
-}{}
-
-
-
-%%%%%-- Theorem / Definition / Remark styles --%%%%%
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                    Theorem / Definition / Remark styles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % How to create a new theorem style
 \newtheoremstyle{newstyle} % name of the style to be used
 {\topsep} % measure of space to leave above the theorem. E.g.: 3pt
@@ -58,6 +61,10 @@
 % \end{envname}
 
 \@ifpackagewith{babel}{french}{
+	% Add accented characters if writing in French
+	\RequirePackage[utf8]{inputenc}
+	\RequirePackage[T1]{fontenc}
+	
 	% French environments
 	\theoremstyle{plain}
 	\newtheorem{thm}{Théorème}[section]
@@ -91,8 +98,19 @@
 }
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                         Math environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%-- Probability operators --%%%%%
+% use AMS "align" environment, which is superior
+\def\[#1\]{\begin{equation}\begin{aligned}#1\end{aligned}\end{equation}} % \[ ...\]
+\def\*[#1\]{\begin{equation*}\begin{aligned}#1\end{aligned}\end{equation*}} % \*[ ...\*]
+\def\s*[#1\s]{\small\begin{align*}#1\end{align*}\normalsize} % \s[ ...\s]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                         Probability operators
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % All mathematical operators are used as is, e.g. A \eqd B
 \DeclareMathOperator{\E}{E} % Expectation
@@ -114,8 +132,9 @@
 \renewcommand{\i}{{i\mkern1mu}} % Imaginary number
 
 
-
-%%%%%-- Calligraphy font --%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                         Calligraphy font
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\Aa}{\mathcal{A}}
 \newcommand{\Bb}{\mathcal{B}}
@@ -145,8 +164,9 @@
 \newcommand{\Zz}{\mathcal{Z}}
 
 
-
-%%%%%-- Blackboard font --%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                            Blackboard font
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \renewcommand{\AA}{\mathbb{A}}
 \newcommand{\BB}{\mathbb{B}}
@@ -176,8 +196,9 @@
 \newcommand{\ZZ}{\mathbb{Z}}
 
 
-
-%%%%%-- Financial risk measures --%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                         Financial risk measures
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NewDocumentCommand{\quant}{o}{ % Quantile \quant[optional]
 	\IfNoValueTF{#1}
@@ -198,8 +219,9 @@
 }
 
 
-
-%%%%%-- Probability distributions --%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                         Probability distributions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NewDocumentCommand \virtualDist {m o}{
 	\mathcal{#1}
@@ -219,8 +241,9 @@
 \DeclareDocumentCommand{\Exp}{o}{\virtualDist{E}[#1]} % \Exp[optional]
 
 
-
-%%%%%-- Derivatives --%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                             Derivatives
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand\df[1]{\ensuremath{\;\mathrm{d}#1\@ifnextchar\d{\!}{}}} % \df{...}
 \DeclareDocumentCommand{\virtualDiff}{m m G{} G{}}{\frac{#1^{#4} \kern 1pt #3}{#1 \kern 1pt #2^{#4}}}
@@ -228,8 +251,9 @@
 \DeclareDocumentCommand{\diff}{m G{} G{}}{\virtualDiff{\text d}{#1}{#2}{#3}} % Derivative \diff{denominator}{optional numerator}{optional exponant}
 
 
-
-%%%%%-- Special sets --%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                          Special sets
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Used as is, e.g. A \in \Real
 \newcommand{\Real}{\mathbb R} % Real numbers
@@ -240,7 +264,9 @@
 
 
 
-%%%%%-- Algebra --%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                              Algebra
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\mat}[1]{\boldsymbol{#1}} % Matrix \mat{...}
 \renewcommand{\vec}[1]{\mat{#1}} % Vector \vec{...}
@@ -249,6 +275,7 @@
 \DeclareMathOperator{\rk}{rk} % Rank of a matrix
 \newcommand{\Proj}[1]{\mat P_{#1}} % Projection matrix \Proj{...}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert} % Norm \norm{...}
+
 % Inline matrix (enclosed with resp. nothing, parentheses, brackets or vertical lines)
 % \begin{envname} ... \end{envname}
 \newenvironment{imatrix}{\begin{smallmatrix}}{\end{smallmatrix}}
@@ -257,8 +284,9 @@
 \newenvironment{ivmatrix}{\left|\begin{smallmatrix}}{\end{smallmatrix}\right|}
 
 
-
-%%%%%-- Optimization --%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                           Optimization
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \DeclareMathOperator*{\argmin}{arg\,min} % Argmin
 \DeclareMathOperator*{\argmax}{arg\,max} % Argmax
@@ -269,7 +297,9 @@
 }
 
 
-%%%%%-- Others functions --%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                         Other functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil} % \ceil*{...}
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor} % \floor*{...}
